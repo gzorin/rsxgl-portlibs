@@ -122,6 +122,8 @@ bool IOSystem::ComparePaths (const char* one, const char* second) const
 // XXX http://insanecoding.blogspot.com/2007/11/pathmax-simply-isnt.html 
 #ifdef PATH_MAX
 #	define PATHLIMIT PATH_MAX
+#elif defined(MAXPATHLEN)
+#       define PATHLIMIT MAXPATHLEN
 #else
 #	define PATHLIMIT 4096
 #endif
@@ -134,6 +136,8 @@ inline void MakeAbsolutePath (const char* in, char* _out)
 	char* ret;
 #ifdef _WIN32
 	ret = ::_fullpath(_out, in,PATHLIMIT);
+#elif defined(__lv2ppu__)
+	ret = strncpy(_out,in,PATHLIMIT);
 #else
     	// use realpath
     	ret = realpath(in, _out);
