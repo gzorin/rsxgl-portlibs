@@ -59,7 +59,7 @@ AC_CONFIG_COMMANDS([zziplib],
 	srcdir="${abs_srcdir}/extsrc/zziplib";
 	mkdir -p "${builddir}" &&
 	pushd "${builddir}" &&
-	${srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
+	${srcdir}/configure --host="${host}" --prefix="${prefix}" --enable-builddir="${builddir}/${host}" --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
 	popd
 ],
 [	host="${host}";
