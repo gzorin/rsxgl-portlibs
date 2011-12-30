@@ -171,4 +171,3 @@ else
 fi[]dnl
 ])# PKG_CHECK_MODULES
 
-m4_include([m4/ps3toolchain.m4])

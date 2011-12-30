@@ -1,3 +1,4 @@
 #!/bin/bash
-aclocal -I m4
+aclocal
+automake --add-missing --force-missing --foreign
 autoconf
