@@ -4,7 +4,7 @@ WANT_AUTOMAKE = 1.7
 WANT_AUTOCONF = 2.57
 
 DIST_SUBDIRS = zzip zzipwrap bins test docs  SDL
-SUBDIRS =      zzip zzipwrap bins test docs @SDL@
+SUBDIRS =      zzip zzipwrap docs @SDL@
 
 rpm: dist-bzip2 $(PACKAGE).spec
 	rpmbuild -ta $(PACKAGE)-$(VERSION).tar.bz2
