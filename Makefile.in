@@ -1,0 +1,13 @@
+prefix = @prefix@
+
+SUBDIRS = extsrc/assimp
+
+.PHONY: $(SUBDIRS) install clean
+
+all: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@
+
+install: $(SUBDIRS)
+	@for subdir in $(SUBDIRS); do pushd $$subdir; make install; popd; done
