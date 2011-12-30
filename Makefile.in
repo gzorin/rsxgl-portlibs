@@ -1,6 +1,6 @@
 prefix = @prefix@
 
-SUBDIRS = extsrc/assimp
+SUBDIRS = extsrc/assimp extsrc/zziplib
 
 .PHONY: $(SUBDIRS) install clean
 
@@ -11,3 +11,9 @@ $(SUBDIRS):
 
 install: $(SUBDIRS)
 	@for subdir in $(SUBDIRS); do pushd $$subdir; make install; popd; done
+
+clean: $(SUBDIRS)
+	@for subdir in $(SUBDIRS); do pushd $$subdir; make clean; popd; done
+
+uninstall: $(SUBDIRS)
+	@for subdir in $(SUBDIRS); do pushd $$subdir; make uninstall; popd; done

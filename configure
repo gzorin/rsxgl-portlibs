@@ -565,6 +565,12 @@ ac_unique_file="cmake/ps3dev.cmake.in"
 ac_default_prefix=/usr/local/ps3dev/portlibs/ppu
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
+zlib_LIBS
+zlib_CFLAGS
+PKG_CONFIG_LIBDIR
+PKG_CONFIG_PATH
+PKG_CONFIG
+PORTLIBS_PPU_PKG_CONFIG_PATH
 PORTLIBS_PPU_LDFLAGS
 PORTLIBS_PPU_CPPFLAGS
 PORTLIBS
@@ -626,7 +632,12 @@ with_portlibs
 '
       ac_precious_vars='build_alias
 host_alias
-target_alias'
+target_alias
+PKG_CONFIG
+PKG_CONFIG_PATH
+PKG_CONFIG_LIBDIR
+zlib_CFLAGS
+zlib_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1240,6 +1251,18 @@ Optional Packages:
   --with-ps3dev           location of compiled PS3 development toolchain
   --with-portlibs         location of ported libraries
 
+Some influential environment variables:
+  PKG_CONFIG  path to pkg-config utility
+  PKG_CONFIG_PATH
+              directories to add to pkg-config's search path
+  PKG_CONFIG_LIBDIR
+              path overriding pkg-config's built-in search path
+  zlib_CFLAGS C compiler flags for zlib, overriding pkg-config
+  zlib_LIBS   linker flags for zlib, overriding pkg-config
+
+Use these variables to override the choices made by `configure' or to help
+it to find libraries and programs with nonstandard names/locations.
+
 Report bugs to the package provider.
 _ACEOF
 ac_status=$?
@@ -1714,7 +1737,6 @@ $as_echo "no" >&6; }
 fi
 
 
-
 if test -n "${CMAKE}"; then
 { $as_echo "$as_me:${as_lineno-$LINENO}: path to cmake is ${CMAKE}" >&5
 $as_echo "$as_me: path to cmake is ${CMAKE}" >&6;}
@@ -1722,6 +1744,7 @@ else
 as_fn_error $? "cannot find cmake" "$LINENO" 5
 fi;
 
+# Find pkg-config:
 
 
 PPU_CPPFLAGS=""
@@ -1785,6 +1808,7 @@ fi
 PORTLIBS=${PORTLIBS:-"${PS3DEV}/portlibs"}
 PORTLIBS_PPU_CPPFLAGS="-I\${PORTLIBS}/ppu/include"
 PORTLIBS_PPU_LDFLAGS="-L\${PORTLIBS}/ppu/lib"
+PORTLIBS_PPU_PKG_CONFIG_PATH="${PORTLIBS}/ppu/lib/pkgconfig"
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: PORTLIBS is set to ${PORTLIBS}" >&5
 $as_echo "$as_me: PORTLIBS is set to ${PORTLIBS}" >&6;}
@@ -1796,8 +1820,232 @@ $as_echo "$as_me: PORTLIBS is set to ${PORTLIBS}" >&6;}
 
 
 
+
+
+# Find other portlibs that we depend upon:
+save_PKG_CONFIG_PATH="${PKG_CONFIG_PATH}"; PKG_CONFIG_PATH="${PORTLIBS_PPU_PKG_CONFIG_PATH}"
+
+# zlib:
+
+
+
+
+
+
+
+if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
+	if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_PKG_CONFIG+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+if test -n "$PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_CONFIG" >&5
+$as_echo "$PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_path_PKG_CONFIG"; then
+  ac_pt_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_ac_pt_PKG_CONFIG+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ac_pt_PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+if test -n "$ac_pt_PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_pt_PKG_CONFIG" >&5
+$as_echo "$ac_pt_PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_pt_PKG_CONFIG" = x; then
+    PKG_CONFIG=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    PKG_CONFIG=$ac_pt_PKG_CONFIG
+  fi
+else
+  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
+fi
+
+fi
+if test -n "$PKG_CONFIG"; then
+	_pkg_min_version=0.9.0
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config is at least version $_pkg_min_version" >&5
+$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
+	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	else
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+		PKG_CONFIG=""
+	fi
+fi
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for zlib" >&5
+$as_echo_n "checking for zlib... " >&6; }
+
+if test -n "$zlib_CFLAGS"; then
+    pkg_cv_zlib_CFLAGS="$zlib_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"zlib\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "zlib") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_zlib_CFLAGS=`$PKG_CONFIG --cflags "zlib" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$zlib_LIBS"; then
+    pkg_cv_zlib_LIBS="$zlib_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"zlib\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "zlib") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_zlib_LIBS=`$PKG_CONFIG --libs "zlib" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        zlib_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "zlib" 2>&1`
+        else
+	        zlib_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "zlib" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$zlib_PKG_ERRORS" >&5
+
+	as_fn_error $? "Package requirements (zlib) were not met:
+
+$zlib_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables zlib_CFLAGS
+and zlib_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details." "$LINENO" 5
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables zlib_CFLAGS
+and zlib_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details" "$LINENO" 5; }
+else
+	zlib_CFLAGS=$pkg_cv_zlib_CFLAGS
+	zlib_LIBS=$pkg_cv_zlib_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+fi
+
+PKG_CONFIG_PATH="${save_PKG_CONFIG_PATH}"
+
 # Configure assimp
 ac_config_commands="$ac_config_commands assimp"
+
+
+# Configure zziplib
+ac_config_commands="$ac_config_commands zziplib"
 
 
 cat >confcache <<\_ACEOF
@@ -2521,6 +2769,12 @@ cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
 	prefix="${prefix}";
 	abs_srcdir=$(cd "${srcdir}"; /bin/pwd);
 
+	abs_top_builddir=`pwd`;
+	prefix="${prefix}";
+	abs_srcdir=$(cd "${srcdir}"; /bin/pwd);
+	zlib_CFLAGS="${zlib_CFLAGS}";
+	zlib_LIBS="${zlib_LIBS}";
+
 
 _ACEOF
 
@@ -2533,6 +2787,7 @@ do
     "cmake/ps3dev.cmake") CONFIG_FILES="$CONFIG_FILES cmake/ps3dev.cmake" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "assimp") CONFIG_COMMANDS="$CONFIG_COMMANDS assimp" ;;
+    "zziplib") CONFIG_COMMANDS="$CONFIG_COMMANDS zziplib" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
@@ -2959,6 +3214,13 @@ $as_echo "$as_me: executing $ac_file commands" >&6;}
 	"${CMAKE}" -DCMAKE_TOOLCHAIN_FILE="${abs_top_builddir}/cmake/ps3dev.cmake" \
 		   -DBUILD_ASSIMP_TOOLS=OFF -DBUILD_STATIC_LIB=ON -DENABLE_BOOST_WORKAROUND=ON -DCMAKE_INSTALL_PREFIX="${prefix}" \
 		   "${srcdir}" &&
+	popd
+ ;;
+    "zziplib":C) 	builddir="${abs_top_builddir}/extsrc/zziplib";
+	srcdir="${abs_srcdir}/extsrc/zziplib";
+	mkdir -p "${builddir}" &&
+	pushd "${builddir}" &&
+	${srcdir}/configure --host=powerpc64-ps3-elf --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
 	popd
  ;;
 
