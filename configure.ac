@@ -11,6 +11,8 @@ AC_CANONICAL_HOST
 AC_PROG_CC
 AC_PROG_CXX
 
+AC_PATH_PROG([PWDCMD],[pwd])
+
 # Allow user to specify the location of an SDK directory:
 AC_ARG_WITH([sdk-directory],[AS_HELP_STRING([--with-sdk-directory],[set the location of the directory to search for dependencies (e.g., the zlib library)])],
 [with_sdk_directory=${withval}],
@@ -47,10 +49,10 @@ AC_CONFIG_COMMANDS([assimp],
 		   "${srcdir}" &&
 	popd
 ],
-[	abs_top_builddir=`pwd`;
-	CMAKE="${CMAKE}";
+[	CMAKE="${CMAKE}";
+	abs_top_builddir=$(${PWDCMD});
 	prefix="${prefix}";
-	abs_srcdir=$(cd "${srcdir}"; /bin/pwd);
+	abs_srcdir=$(cd "${srcdir}"; ${PWDCMD});
 ])
 
 # Configure zziplib
@@ -59,13 +61,13 @@ AC_CONFIG_COMMANDS([zziplib],
 	srcdir="${abs_srcdir}/extsrc/zziplib";
 	mkdir -p "${builddir}" &&
 	pushd "${builddir}" &&
-	${srcdir}/configure --host="${host}" --prefix="${prefix}" --enable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
+	${srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
 	popd
 ],
 [	host="${host}";
-	abs_top_builddir=`pwd`;
+	abs_top_builddir=$(${PWDCMD});
 	prefix="${prefix}";
-	abs_srcdir=$(cd "${srcdir}"; /bin/pwd);
+	abs_srcdir=$(cd "${srcdir}"; ${PWDCMD});
 	zlib_CFLAGS="${zlib_CFLAGS}";
 	zlib_LIBS="${zlib_LIBS}";
 ])
