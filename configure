@@ -4003,14 +4003,14 @@ cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
 #
 	CMAKE="${CMAKE}";
 	abs_top_builddir="${abs_top_builddir}";
-	package_builddir="${assimp_builddir}";
+	assimp_builddir="${assimp_builddir}";
 	prefix="${prefix}";
-	package_srcdir="${assimp_srcdir}";
+	assimp_srcdir="${assimp_srcdir}";
 
 	host="${host}";
-	package_builddir="${zziplib_builddir}";
+	zziplib_builddir="${zziplib_builddir}";
 	prefix="${prefix}";
-	package_srcdir="${zziplib_srcdir}";
+	zziplib_srcdir="${zziplib_srcdir}";
 	zlib_CFLAGS="${zlib_CFLAGS}";
 	zlib_LIBS="${zlib_LIBS}";
 
@@ -4445,16 +4445,16 @@ $as_echo "$as_me: executing $ac_file commands" >&6;}
 
 
   case $ac_file$ac_mode in
-    "assimp":C) 	mkdir -p "${package_builddir}" &&
-	pushd "${package_builddir}" &&
+    "assimp":C) 	mkdir -p "${assimp_builddir}" &&
+	pushd "${assimp_builddir}" &&
 	"${CMAKE}" -DCMAKE_TOOLCHAIN_FILE="${abs_top_builddir}/cmake/toolchain.cmake" \
 		   -DBUILD_ASSIMP_TOOLS=OFF -DBUILD_STATIC_LIB=ON -DENABLE_BOOST_WORKAROUND=ON -DCMAKE_INSTALL_PREFIX="${prefix}" \
-		   "${package_srcdir}" &&
+		   "${assimp_srcdir}" &&
 	popd
  ;;
-    "zziplib":C) 	mkdir -p "${package_builddir}" &&
-	pushd "${package_builddir}" &&
-	${package_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
+    "zziplib":C) 	mkdir -p "${zziplib_builddir}" &&
+	pushd "${zziplib_builddir}" &&
+	${zziplib_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
 	popd
  ;;
 

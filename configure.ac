@@ -46,18 +46,18 @@ assimp_builddir="${abs_top_builddir}/extsrc/assimp";
 assimp_srcdir="${abs_srcdir}/extsrc/assimp";
 SUBDIRS="${SUBDIRS} \"${assimp_builddir}\"";
 AC_CONFIG_COMMANDS([assimp],
-[	mkdir -p "${package_builddir}" &&
-	pushd "${package_builddir}" &&
+[	mkdir -p "${assimp_builddir}" &&
+	pushd "${assimp_builddir}" &&
 	"${CMAKE}" -DCMAKE_TOOLCHAIN_FILE="${abs_top_builddir}/cmake/toolchain.cmake" \
 		   -DBUILD_ASSIMP_TOOLS=OFF -DBUILD_STATIC_LIB=ON -DENABLE_BOOST_WORKAROUND=ON -DCMAKE_INSTALL_PREFIX="${prefix}" \
-		   "${package_srcdir}" &&
+		   "${assimp_srcdir}" &&
 	popd
 ],
 [	CMAKE="${CMAKE}";
 	abs_top_builddir="${abs_top_builddir}";
-	package_builddir="${assimp_builddir}";
+	assimp_builddir="${assimp_builddir}";
 	prefix="${prefix}";
-	package_srcdir="${assimp_srcdir}";
+	assimp_srcdir="${assimp_srcdir}";
 ])
 
 # Configure zziplib
@@ -66,15 +66,15 @@ zziplib_srcdir="${abs_srcdir}/extsrc/zziplib";
 if test "${zziplib_builddir}" == "${zziplib_srcdir}"; then zziplib_builddir="${zziplib_builddir}/build/${host}"; fi;
 SUBDIRS="${SUBDIRS} \"${zziplib_builddir}\"";
 AC_CONFIG_COMMANDS([zziplib],
-[	mkdir -p "${package_builddir}" &&
-	pushd "${package_builddir}" &&
-	${package_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
+[	mkdir -p "${zziplib_builddir}" &&
+	pushd "${zziplib_builddir}" &&
+	${zziplib_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
 	popd
 ],
 [	host="${host}";
-	package_builddir="${zziplib_builddir}";
+	zziplib_builddir="${zziplib_builddir}";
 	prefix="${prefix}";
-	package_srcdir="${zziplib_srcdir}";
+	zziplib_srcdir="${zziplib_srcdir}";
 	zlib_CFLAGS="${zlib_CFLAGS}";
 	zlib_LIBS="${zlib_LIBS}";
 ])
