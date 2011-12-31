@@ -15,5 +15,8 @@ install: $(SUBDIRS)
 clean:
 	@for subdir in $(SUBDIRS); do pushd $$subdir; make clean; popd; done
 
+distclean:
+	@for subdir in $(SUBDIRS); do pushd $$subdir; make distclean; popd; done
+
 uninstall:
 	@for subdir in $(SUBDIRS); do pushd $$subdir; make uninstall; popd; done
