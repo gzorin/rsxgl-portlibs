@@ -1,6 +1,6 @@
 prefix = @prefix@
 
-SUBDIRS = extsrc/assimp extsrc/zziplib
+SUBDIRS = @SUBDIRS@
 
 .PHONY: $(SUBDIRS) install clean
 

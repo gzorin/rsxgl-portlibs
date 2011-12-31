@@ -37,40 +37,48 @@ fi;
 # zlib:
 PKG_CHECK_MODULES([zlib],[zlib])
 
+abs_top_builddir=$(cd "${builddir}"; ${PWDCMD});
+abs_srcdir=$(cd "${srcdir}"; ${PWDCMD});
+SUBDIRS=""
+
 # Configure assimp
+assimp_builddir="${abs_top_builddir}/extsrc/assimp";
+assimp_srcdir="${abs_srcdir}/extsrc/assimp";
+SUBDIRS="${SUBDIRS} \"${assimp_builddir}\"";
 AC_CONFIG_COMMANDS([assimp],
-[
-	builddir="${abs_top_builddir}/extsrc/assimp";
-	srcdir="${abs_srcdir}/extsrc/assimp";
-	mkdir -p "${builddir}" &&
-	pushd "${builddir}" &&
+[	mkdir -p "${package_builddir}" &&
+	pushd "${package_builddir}" &&
 	"${CMAKE}" -DCMAKE_TOOLCHAIN_FILE="${abs_top_builddir}/cmake/toolchain.cmake" \
 		   -DBUILD_ASSIMP_TOOLS=OFF -DBUILD_STATIC_LIB=ON -DENABLE_BOOST_WORKAROUND=ON -DCMAKE_INSTALL_PREFIX="${prefix}" \
-		   "${srcdir}" &&
+		   "${package_srcdir}" &&
 	popd
 ],
 [	CMAKE="${CMAKE}";
-	abs_top_builddir=$(${PWDCMD});
+	abs_top_builddir="${abs_top_builddir}";
+	package_builddir="${assimp_builddir}";
 	prefix="${prefix}";
-	abs_srcdir=$(cd "${srcdir}"; ${PWDCMD});
+	package_srcdir="${assimp_srcdir}";
 ])
 
 # Configure zziplib
+zziplib_builddir="${abs_top_builddir}/extsrc/zziplib";
+zziplib_srcdir="${abs_srcdir}/extsrc/zziplib";
+if test "${zziplib_builddir}" == "${zziplib_srcdir}"; then zziplib_builddir="${zziplib_builddir}/build/${host}"; fi;
+SUBDIRS="${SUBDIRS} \"${zziplib_builddir}\"";
 AC_CONFIG_COMMANDS([zziplib],
-[	builddir="${abs_top_builddir}/extsrc/zziplib";
-	srcdir="${abs_srcdir}/extsrc/zziplib";
-	if test "${builddir}" == "${srcdir}"; then builddir="${builddir}/build/${host}"; fi;
-	mkdir -p "${builddir}" &&
-	pushd "${builddir}" &&
-	${srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
+[	mkdir -p "${package_builddir}" &&
+	pushd "${package_builddir}" &&
+	${package_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
 	popd
 ],
 [	host="${host}";
-	abs_top_builddir=$(${PWDCMD});
+	package_builddir="${zziplib_builddir}";
 	prefix="${prefix}";
-	abs_srcdir=$(cd "${srcdir}"; ${PWDCMD});
+	package_srcdir="${zziplib_srcdir}";
 	zlib_CFLAGS="${zlib_CFLAGS}";
 	zlib_LIBS="${zlib_LIBS}";
 ])
+
+AC_SUBST([SUBDIRS])
 
 AC_OUTPUT
