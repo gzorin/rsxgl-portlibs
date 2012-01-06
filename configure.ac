@@ -10,7 +10,6 @@ AC_CANONICAL_HOST
 # Tools:
 AC_PROG_CC
 AC_PROG_CXX
-
 AC_PATH_PROG([PWDCMD],[pwd])
 
 # Allow user to specify the location of an SDK directory:
@@ -68,7 +67,7 @@ SUBDIRS="${SUBDIRS} \"${zziplib_builddir}\"";
 AC_CONFIG_COMMANDS([zziplib],
 [	mkdir -p "${zziplib_builddir}" &&
 	pushd "${zziplib_builddir}" &&
-	${zziplib_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
+	${zziplib_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared zlib_CFLAGS="${zlib_CFLAGS}" zlib_LIBS="${zlib_LIBS}" &&
 	popd
 ],
 [	host="${host}";
@@ -77,6 +76,26 @@ AC_CONFIG_COMMANDS([zziplib],
 	zziplib_srcdir="${zziplib_srcdir}";
 	zlib_CFLAGS="${zlib_CFLAGS}";
 	zlib_LIBS="${zlib_LIBS}";
+	export CPPFLAGS LDFLAGS;
+])
+
+# Configure glassimp
+glassimp_builddir="${abs_top_builddir}/extsrc/glassimp";
+glassimp_srcdir="${abs_srcdir}/extsrc/glassimp";
+if test "${glassimp_builddir}" == "${glassimp_srcdir}"; then glassimp_builddir="${glassimp_builddir}/build/${host}"; fi;
+SUBDIRS="${SUBDIRS} \"${glassimp_builddir}\"";
+AC_CONFIG_COMMANDS([glassimp],
+[	mkdir -p "${glassimp_builddir}" &&
+	pushd "${glassimp_builddir}" &&
+	${glassimp_srcdir}/configure --host="${host}" --prefix="${prefix}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" assimp_CPPFLAGS="-I${assimp_srcdir}/include" assimp_LDFLAGS="-L${assimp_builddir}/code" assimp_LIBS="-lassimp" &&
+	popd
+],
+[	host="${host}";
+	glassimp_builddir="${glassimp_builddir}";
+	prefix="${prefix}";
+	glassimp_srcdir="${glassimp_srcdir}";
+	CPPFLAGS="${CPPFLAGS}";
+	LDFLAGS="${LDFLAGS}";
 ])
 
 AC_SUBST([SUBDIRS])

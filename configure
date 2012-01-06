@@ -2943,7 +2943,6 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-
 # Extract the first word of "pwd", so it can be a program name with args.
 set dummy pwd; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -3281,6 +3280,14 @@ zziplib_srcdir="${abs_srcdir}/extsrc/zziplib";
 if test "${zziplib_builddir}" == "${zziplib_srcdir}"; then zziplib_builddir="${zziplib_builddir}/build/${host}"; fi;
 SUBDIRS="${SUBDIRS} \"${zziplib_builddir}\"";
 ac_config_commands="$ac_config_commands zziplib"
+
+
+# Configure glassimp
+glassimp_builddir="${abs_top_builddir}/extsrc/glassimp";
+glassimp_srcdir="${abs_srcdir}/extsrc/glassimp";
+if test "${glassimp_builddir}" == "${glassimp_srcdir}"; then glassimp_builddir="${glassimp_builddir}/build/${host}"; fi;
+SUBDIRS="${SUBDIRS} \"${glassimp_builddir}\"";
+ac_config_commands="$ac_config_commands glassimp"
 
 
 
@@ -4013,6 +4020,14 @@ cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
 	zziplib_srcdir="${zziplib_srcdir}";
 	zlib_CFLAGS="${zlib_CFLAGS}";
 	zlib_LIBS="${zlib_LIBS}";
+	export CPPFLAGS LDFLAGS;
+
+	host="${host}";
+	glassimp_builddir="${glassimp_builddir}";
+	prefix="${prefix}";
+	glassimp_srcdir="${glassimp_srcdir}";
+	CPPFLAGS="${CPPFLAGS}";
+	LDFLAGS="${LDFLAGS}";
 
 
 _ACEOF
@@ -4027,6 +4042,7 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "assimp") CONFIG_COMMANDS="$CONFIG_COMMANDS assimp" ;;
     "zziplib") CONFIG_COMMANDS="$CONFIG_COMMANDS zziplib" ;;
+    "glassimp") CONFIG_COMMANDS="$CONFIG_COMMANDS glassimp" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
@@ -4454,7 +4470,12 @@ $as_echo "$as_me: executing $ac_file commands" >&6;}
  ;;
     "zziplib":C) 	mkdir -p "${zziplib_builddir}" &&
 	pushd "${zziplib_builddir}" &&
-	${zziplib_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared CPPFLAGS="${zlib_CFLAGS}" LDFLAGS="${zlib_LIBS}" &&
+	${zziplib_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared zlib_CFLAGS="${zlib_CFLAGS}" zlib_LIBS="${zlib_LIBS}" &&
+	popd
+ ;;
+    "glassimp":C) 	mkdir -p "${glassimp_builddir}" &&
+	pushd "${glassimp_builddir}" &&
+	${glassimp_srcdir}/configure --host="${host}" --prefix="${prefix}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" assimp_CPPFLAGS="-I${assimp_srcdir}/include" assimp_LDFLAGS="-L${assimp_builddir}/code" assimp_LIBS="-lassimp" &&
 	popd
  ;;
 
