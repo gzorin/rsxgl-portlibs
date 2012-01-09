@@ -1,6 +1,7 @@
 AC_INIT([rsxgl-portlibs],[0.1])
 AC_CONFIG_SRCDIR([cmake/toolchain.cmake.in])
 AC_CONFIG_AUX_DIR([config])
+AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_FILES(
 	cmake/toolchain.cmake
 	Makefile
@@ -21,7 +22,7 @@ echo "SDK directory is: ${with_sdk_directory}"
 # Add to CPPFLAGS and LDFLAGS:
 if test -d "${with_sdk_directory}/include"; then CPPFLAGS="${CPPFLAGS} -I${with_sdk_directory}/include"; fi
 if test -d "${with_sdk_directory}/lib"; then LDFLAGS="${LDFLAGS} -L${with_sdk_directory}/lib"; fi
-if test -d "${with_sdk_directory}/lib/pkgconfig"; then PKG_CONFIG_PATH="${with_sdk_directory}/lib/pkgconfig:${PKG_CONFIG_PATH}"; fi
+if test -d "${with_sdk_directory}/lib/pkgconfig"; then export PKG_CONFIG_PATH="${with_sdk_directory}/lib/pkgconfig:${PKG_CONFIG_PATH}"; fi
 
 # Find cmake:
 AC_PATH_PROG([CMAKE],[cmake])
@@ -57,26 +58,6 @@ AC_CONFIG_COMMANDS([assimp],
 	assimp_builddir="${assimp_builddir}";
 	prefix="${prefix}";
 	assimp_srcdir="${assimp_srcdir}";
-])
-
-# Configure zziplib
-zziplib_builddir="${abs_top_builddir}/extsrc/zziplib";
-zziplib_srcdir="${abs_srcdir}/extsrc/zziplib";
-if test "${zziplib_builddir}" == "${zziplib_srcdir}"; then zziplib_builddir="${zziplib_builddir}/build/${host}"; fi;
-SUBDIRS="${SUBDIRS} \"${zziplib_builddir}\"";
-AC_CONFIG_COMMANDS([zziplib],
-[	mkdir -p "${zziplib_builddir}" &&
-	pushd "${zziplib_builddir}" &&
-	${zziplib_srcdir}/configure --host="${host}" --prefix="${prefix}" --disable-builddir --disable-mmap --disable-shared zlib_CFLAGS="${zlib_CFLAGS}" zlib_LIBS="${zlib_LIBS}" &&
-	popd
-],
-[	host="${host}";
-	zziplib_builddir="${zziplib_builddir}";
-	prefix="${prefix}";
-	zziplib_srcdir="${zziplib_srcdir}";
-	zlib_CFLAGS="${zlib_CFLAGS}";
-	zlib_LIBS="${zlib_LIBS}";
-	export CPPFLAGS LDFLAGS;
 ])
 
 # Configure glassimp
